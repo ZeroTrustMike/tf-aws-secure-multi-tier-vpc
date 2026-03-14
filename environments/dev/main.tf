@@ -14,8 +14,9 @@ provider "aws" {
 
 module "network" {
   source = "../../modules/network"
-  
-  vpc_cidr_block = abs()
-  azs = [  ]
-  public_subnet_cidrs = 
+    
+  vpc_cidr_block = var.vpc_cidr_block
+  azs = var.azs
+  public_subnet_cidrs = var.public_subnet_cidrs
+  private_subnet_cidrs = var.private_subnet_cidrs
 }
