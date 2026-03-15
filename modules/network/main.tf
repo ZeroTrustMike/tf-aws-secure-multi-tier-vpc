@@ -1,8 +1,12 @@
+locals {
+  name_prefix = "main"
+}
+
 resource "aws_vpc" "main" {
   cidr_block       = var.vpc_cidr_block
 
   tags = {
-    Name = "Main"
+    Name = local.name_prefix
   }
 }
 
@@ -14,7 +18,7 @@ resource "aws_subnet" "public_subnet" {
   availability_zone = var.azs[count.index]
 
   tags = {
-    Name = "Main-${count.index + 1}"
+    Name = "${local.name_prefix}-public-${count.index + 1}"
   }
 }
 
@@ -26,7 +30,7 @@ resource "aws_subnet" "private_subnet" {
   availability_zone = var.azs[count.index]
 
   tags = {
-    Name = "Main-${count.index + 1}"
+    Name = "${local.name_prefix}-private-${count.index + 1}"
   }
 }
 
@@ -34,7 +38,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "Main"
+    Name = "${local.name_prefix}-igw"
   }
 }
 
@@ -49,7 +53,7 @@ resource "aws_nat_gateway" "ngw" {
   subnet_id     = aws_subnet.private_subnet[0].id
 
   tags = {
-    Name = "Main NAT"
+    Name = "${local.name_prefix}-nat"
   }
 }  
 
@@ -62,7 +66,7 @@ resource "aws_route_table" "public_rt" {
   }
 
   tags = {
-    Name = "main"
+    Name = "${local.name_prefix}-public-rt"
   }
 }
 
@@ -75,7 +79,7 @@ resource "aws_route_table" "private_rt" {
   }
 
   tags = {
-    Name = "main"
+    Name = "${local.name_prefix}-private-rt"
   }
 }
 
