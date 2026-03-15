@@ -93,24 +93,30 @@ resource "aws_route_table_association" "private_rt" {
   route_table_id = aws_route_table.private_rt.id
 }
 
-# resource "aws_security_group" "allow_tls" {
-#   name        = "allow_tls"
-#   description = "Allow TLS inbound traffic"
-#   vpc_id      = aws_vpc.main.id
+resource "aws_security_group" "allow_tls" {
+  name        = "allow_tls"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.main.id
 
-#   # Defines inbound traffic rules
-#   ingress {
-#     from_port   = 443
-#     to_port     = 443
-#     protocol    = "tcp"
-#     cidr_blocks = [aws_vpc.main.cidr_block]
-#   }
+  dynamic "ingress" {
+    for_each = var.vpc_ingress
 
-#   # Defines outbound traffic rules
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-# }
+    content {
+      from_port = ingress.value.from_port
+      to_port = ingress.value.to_port
+      protocol = ingress.value.protocol
+      cidr_blocks = ingress.value.cidr_blocks
+    }
+  }  
+
+  dynamic "egress" {
+    for_each = var.vpc_egress
+
+    content {
+      from_port = egress.value.from_port
+      to_port = egress.value.to_port
+      protocol = egress.value.protocol
+      cidr_blocks = egress.value.cidr_blocks
+    }
+  }
+}

@@ -19,5 +19,7 @@ module "network" {
   azs = var.azs
   public_subnet_cidrs = var.public_subnet_cidrs
   private_subnet_cidrs = var.private_subnet_cidrs
+  vpc_ingress = var.vpc_ingress
+  vpc_egress = var.vpc_egress
 }
 
