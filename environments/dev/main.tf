@@ -23,3 +23,21 @@ module "network" {
   vpc_egress = var.vpc_egress
 }
 
+module "compute" {
+  source = "../../modules/compute"
+
+  alb_name = var.alb_name
+  alb_internal = var.alb_internal
+  alb_sg = [module.network.network_sg]
+  public_subnet_ids = module.network.public_subnet_ids
+  access_logs_prefix = var.access_logs_prefix
+  access_logs_enabled = var.access_logs_enabled
+  access_logs_bucket = module.storage.lb_logs
+}
+
+module "storage" {
+  source = "../../modules/storage"
+
+  project_name = var.project_name
+  environment = var.environment
+}
