@@ -1,10 +1,10 @@
-resource "aws_security_group" "alb_sg" {
-  name        = "alb_sg"
+resource "aws_security_group" "lb_sg" {
+  name        = "lb-sg"
   description = "Allow TLS inbound traffic"
   vpc_id      = module.vpc.vpc_id
 
   dynamic "ingress" {
-    for_each = var.vpc_ingress
+    for_each = var.lb_ingress
 
     content {
       from_port = ingress.value.from_port
@@ -15,7 +15,7 @@ resource "aws_security_group" "alb_sg" {
   }  
 
   dynamic "egress" {
-    for_each = var.vpc_egress
+    for_each = var.lb_egress
 
     content {
       from_port = egress.value.from_port

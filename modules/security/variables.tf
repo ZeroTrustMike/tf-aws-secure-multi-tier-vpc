@@ -1,4 +1,4 @@
-variable "vpc_ingress" {
+variable "lb_ingress" {
   type = list(object({
     from_port = number
     to_port = number
@@ -7,7 +7,7 @@ variable "vpc_ingress" {
   }))
 }
 
-variable "vpc_egress" {
+variable "lb_egress" {
   type = list(object({
     from_port = number
     to_port = number
