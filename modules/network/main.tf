@@ -97,7 +97,7 @@ resource "aws_route_table_association" "private_rt" {
   route_table_id = aws_route_table.private_rt.id
 }
 
-resource "aws_security_group" "allow_tls" {
+resource "aws_security_group" "network_sg" {
   name        = "vpc_sg"
   description = "Allow TLS inbound traffic"
   vpc_id      = aws_vpc.main.id
